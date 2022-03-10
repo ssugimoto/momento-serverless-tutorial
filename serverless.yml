@@ -1,0 +1,55 @@
+service: momento-serverless-tutorial
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  environment:
+    TABLE_NAME: !Ref DynamoDBTable
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+  iam:
+    role:
+      statements:
+        - Effect: 'Allow'
+          Action: 
+            - 'dynamodb:GetItem'
+            - 'dynamodb:PutItem'
+            - 'dynamodb:ConditionCheckItem'
+          Resource: !GetAtt 'DynamoDBTable.Arn'
+
+functions:
+  createUser:
+    handler: src/handlers/createUser.handler
+    events:
+      - http: POST /users
+  createOrganization:
+    handler: src/handlers/createOrganization.handler
+    events:
+      - http: POST /organizations
+  addUserToOrganization:
+    handler: src/handlers/addUserToOrganization.handler
+    events:
+      - http: POST /organizations/{organization}/members
+  userInOrganization:
+    handler: src/handlers/userInOrganization.handler
+    events:
+      - http: GET /organizations/{organization}/members/{username}
+
+resources:
+  Resources:
+    DynamoDBTable:
+      Type: "AWS::DynamoDB::Table"
+      Properties:
+          AttributeDefinitions:
+            - AttributeName: "PK"
+              AttributeType: "S"
+            - AttributeName: "SK"
+              AttributeType: "S"
+          KeySchema:
+            - AttributeName: "PK"
+              KeyType: "HASH"
+            - AttributeName: "SK"
+              KeyType: "RANGE"
+          BillingMode: 'PAY_PER_REQUEST'
+          
