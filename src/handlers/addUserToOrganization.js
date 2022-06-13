@@ -6,7 +6,9 @@ const handler = async (event, context) => {
   const { Authorization: username } = event.headers;
   const { organization: organizationName } = event.pathParameters;
 
-  const membership = await getAccountService().addUserToOrganization({
+  const accountService = await getAccountService();
+
+  const membership = await accountService.addUserToOrganization({
     organizationName,
     memberUsername,
     role,

@@ -2,6 +2,7 @@ const {
   getDynamoDBClient,
   executeTransactWrite,
 } = require("../clients/dynamodb");
+const { getMomentoClient } = require("../clients/momento");
 const {
   User,
   Organization,
@@ -22,8 +23,9 @@ const {
 const TABLE_NAME = process.env.TABLE_NAME;
 
 class AccountService {
-  constructor(dynamoDBClient) {
+  constructor(dynamoDBClient, cacheClient) {
     this._dynamoDBClient = dynamoDBClient;
+    this._cacheClient = cacheClient;
   }
 
   async createUser({ username, firstName, lastName }) {
@@ -36,6 +38,7 @@ class AccountService {
           ConditionExpression: "attribute_not_exists(PK)",
         })
         .promise();
+
       return user;
     } catch (error) {
       if (error.code === "ConditionalCheckFailedException") {
@@ -47,12 +50,14 @@ class AccountService {
 
   async getUser({ username }) {
     const user = new User({ username });
+
     const response = await this._dynamoDBClient
       .getItem({
         TableName: TABLE_NAME,
         Key: user.keys(),
       })
       .promise();
+
     return response.Item ? itemToUser(response.Item) : null;
   }
 
@@ -103,12 +108,14 @@ class AccountService {
 
   async getOrganization({ organizationName }) {
     const organization = new Organization({ organizationName });
+
     const response = await this._dynamoDBClient
       .getItem({
         TableName: TABLE_NAME,
         Key: organization.keys(),
       })
       .promise();
+
     return response.Item ? itemToOrganization(response.Item) : null;
   }
 
@@ -167,20 +174,21 @@ class AccountService {
       organizationName,
       memberUsername: username,
     });
-    const result = await this._dynamoDBClient
+
+    const response = await this._dynamoDBClient
       .getItem({
         TableName: TABLE_NAME,
         Key: membership.keys(),
       })
       .promise();
 
-    return itemToMembership(result.Item);
+    return result.Item ? itemToMembership(result.Item) : null;
   }
 }
 
 let service = null;
 
-module.exports.getAccountService = (props) => {
+module.exports.getAccountService = async (props) => {
   if (service) return service;
 
   let dynamoDBClient = (props || {}).dynamoDBClient;
@@ -188,7 +196,12 @@ module.exports.getAccountService = (props) => {
     dynamoDBClient = getDynamoDBClient();
   }
 
-  service = new AccountService(dynamoDBClient);
+  let cacheClient = (props || {}).cacheClient;
+  if (!cacheClient) {
+    cacheClient = await getMomentoClient();
+  }
+
+  service = new AccountService(dynamoDBClient, cacheClient);
 
   return service;
 };

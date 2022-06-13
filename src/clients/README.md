@@ -1,6 +1,6 @@
 ## Service clients
 
-This module includes clients for external services, such as AWS services or (in later modules) a Momento cache.
+This module includes clients for external services, such as AWS services or a Momento cache.
 
 We manage initialization logic for external services in a separate module for two reasons:
 

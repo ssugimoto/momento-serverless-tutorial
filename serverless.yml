@@ -7,6 +7,7 @@ provider:
   runtime: nodejs14.x
   environment:
     TABLE_NAME: !Ref DynamoDBTable
+    CACHE_NAME: 'accounts-cache'
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
   iam:
     role:
@@ -17,6 +18,10 @@ provider:
             - 'dynamodb:PutItem'
             - 'dynamodb:ConditionCheckItem'
           Resource: !GetAtt 'DynamoDBTable.Arn'
+        - Effect: "Allow"
+          Action:
+            - "secretsmanager:GetSecretValue"
+          Resource: "<yourSecretArn>"
 
 functions:
   createUser:

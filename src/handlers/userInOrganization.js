@@ -5,7 +5,9 @@ const { makeHandler } = require("./utils");
 const handler = async (event, context) => {
   const { organization: organizationName, username } = event.pathParameters;
 
-  const membership = await getAccountService().getMembership({
+  const accountService = await getAccountService();
+
+  const membership = await accountService.getMembership({
     organizationName,
     username,
   });

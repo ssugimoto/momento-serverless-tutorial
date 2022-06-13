@@ -5,7 +5,9 @@ const handler = async (event, context) => {
   const { organizationName } = JSON.parse(event.body);
   const { Authorization: username } = event.headers;
 
-  const organization = await getAccountService().createOrganization({
+  const accountService = await getAccountService();
+
+  const organization = await accountService.createOrganization({
     organizationName,
     foundingUser: username,
   });

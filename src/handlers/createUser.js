@@ -4,7 +4,9 @@ const { makeHandler } = require("./utils");
 const handler = async (event, context) => {
   const { username, firstName, lastName } = JSON.parse(event.body);
 
-  const user = await getAccountService().createUser({
+  const accountService = await getAccountService();
+
+  const user = await accountService.createUser({
     username,
     firstName,
     lastName,
