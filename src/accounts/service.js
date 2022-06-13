@@ -41,6 +41,13 @@ class AccountService {
         })
         .promise();
 
+      await this._cacheClient.set(
+        CACHE_NAME,
+        getUserCacheKey(user),
+        JSON.stringify(user.toItem()),
+        1800
+      );
+
       return user;
     } catch (error) {
       if (error.code === "ConditionalCheckFailedException") {
@@ -52,9 +59,11 @@ class AccountService {
 
   async getUser({ username }) {
     const user = new User({ username });
-    const userCacheKey = `USER#${user.username}`;
 
-    let getResp = await this._cacheClient.get(CACHE_NAME, userCacheKey);
+    let getResp = await this._cacheClient.get(
+      CACHE_NAME,
+      getUserCacheKey(user)
+    );
     if (getResp.status === CacheGetStatus.Hit) {
       const cacheContent = JSON.parse(getResp.text());
       return cacheContent ? itemToUser(cacheContent) : null;
@@ -69,7 +78,7 @@ class AccountService {
 
     await this._cacheClient.set(
       process.env.CACHE_NAME,
-      userCacheKey,
+      getUserCacheKey(user),
       JSON.stringify(response.Item || ""),
       60
     );
@@ -193,6 +202,14 @@ class AccountService {
           ConditionExpression: "attribute_not_exists(PK)",
         })
         .promise();
+
+      await this._cacheClient.set(
+        process.env.CACHE_NAME,
+        getMembershipCacheKey(membership),
+        JSON.stringify(membership.toItem()),
+        60
+      );
+
       return membership;
     } catch (error) {
       if (error.code === "ConditionalCheckFailedException") {
@@ -207,11 +224,10 @@ class AccountService {
       organizationName,
       memberUsername: username,
     });
-    const membershipCacheKey = `MEMBER#${membership.organizationName}#${membership.memberUsername}`;
 
     let getResp = await this._cacheClient.get(
       process.env.CACHE_NAME,
-      membershipCacheKey
+      getMembershipCacheKey(membership)
     );
     if (getResp.status === CacheGetStatus.Hit) {
       const cacheContent = JSON.parse(getResp.text());
@@ -227,7 +243,7 @@ class AccountService {
 
     await this._cacheClient.set(
       process.env.CACHE_NAME,
-      membershipCacheKey,
+      getMembershipCacheKey(membership),
       JSON.stringify(response.Item || ""),
       60
     );
@@ -238,6 +254,10 @@ class AccountService {
 
 const getUserCacheKey = (user) => {
   return `USER#${user.username}`;
+};
+
+const getMembershipCacheKey = (membership) => {
+  return `MEMBER#${membership.organizationName}#${membership.memberUsername}`;
 };
 
 let service = null;
