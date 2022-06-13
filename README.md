@@ -2,8 +2,6 @@
 
 This is the code repository for a [tutorial on adding a cache to a serverless application](https://gomomento.com/docs/serverless-cache-walkthrough/adding-a-cache-to-serverless). Be sure to refer to that tutorial to walk through the steps of deploying a serverless application, then adding caching to improve the performance of your application.
 
-> Note: This is the `step-4` branch, which includes all code for the first four steps in the tutorial. If you are looking for the final code for the application, you can find it on the `main` branch.
-
 Most of the details of the application are explained in the tutorial. However, you can use this repository to take a deeper look at some of the code aspects that are not discussed in depth in the tutorial.
 
 Specifically, look at the following areas for additional detail:
