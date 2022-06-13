@@ -20,7 +20,9 @@ const {
   MembershipDoesNotExistError,
   InvalidUserPermissionError,
 } = require("./errors");
+const { CacheGetStatus } = require("@momento/sdk");
 const TABLE_NAME = process.env.TABLE_NAME;
+const CACHE_NAME = process.env.CACHE_NAME;
 
 class AccountService {
   constructor(dynamoDBClient, cacheClient) {
@@ -50,6 +52,13 @@ class AccountService {
 
   async getUser({ username }) {
     const user = new User({ username });
+    const userCacheKey = `USER#${user.username}`;
+
+    let getResp = await this._cacheClient.get(CACHE_NAME, userCacheKey);
+    if (getResp.status === CacheGetStatus.Hit) {
+      const cacheContent = JSON.parse(getResp.text());
+      return cacheContent ? itemToUser(cacheContent) : null;
+    }
 
     const response = await this._dynamoDBClient
       .getItem({
@@ -57,6 +66,13 @@ class AccountService {
         Key: user.keys(),
       })
       .promise();
+
+    await this._cacheClient.set(
+      process.env.CACHE_NAME,
+      userCacheKey,
+      JSON.stringify(response.Item || ""),
+      60
+    );
 
     return response.Item ? itemToUser(response.Item) : null;
   }
@@ -108,6 +124,16 @@ class AccountService {
 
   async getOrganization({ organizationName }) {
     const organization = new Organization({ organizationName });
+    const organizationCacheKey = `ORG#${organization.organizationName}`;
+
+    let getResp = await this._cacheClient.get(
+      process.env.CACHE_NAME,
+      organizationCacheKey
+    );
+    if (getResp.status === CacheGetStatus.Hit) {
+      const cacheContent = JSON.parse(getResp.text());
+      return cacheContent ? itemToOrganization(cacheContent) : null;
+    }
 
     const response = await this._dynamoDBClient
       .getItem({
@@ -115,6 +141,13 @@ class AccountService {
         Key: organization.keys(),
       })
       .promise();
+
+    await this._cacheClient.set(
+      process.env.CACHE_NAME,
+      organizationCacheKey,
+      JSON.stringify(response.Item || ""),
+      60
+    );
 
     return response.Item ? itemToOrganization(response.Item) : null;
   }
@@ -174,6 +207,16 @@ class AccountService {
       organizationName,
       memberUsername: username,
     });
+    const membershipCacheKey = `MEMBER#${membership.organizationName}#${membership.memberUsername}`;
+
+    let getResp = await this._cacheClient.get(
+      process.env.CACHE_NAME,
+      membershipCacheKey
+    );
+    if (getResp.status === CacheGetStatus.Hit) {
+      const cacheContent = JSON.parse(getResp.text());
+      return cacheContent ? itemToMembership(cacheContent) : null;
+    }
 
     const response = await this._dynamoDBClient
       .getItem({
@@ -182,9 +225,20 @@ class AccountService {
       })
       .promise();
 
-    return result.Item ? itemToMembership(result.Item) : null;
+    await this._cacheClient.set(
+      process.env.CACHE_NAME,
+      membershipCacheKey,
+      JSON.stringify(response.Item || ""),
+      60
+    );
+
+    return response.Item ? itemToMembership(response.Item) : null;
   }
 }
+
+const getUserCacheKey = (user) => {
+  return `USER#${user.username}`;
+};
 
 let service = null;
 
