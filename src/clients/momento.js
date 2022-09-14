@@ -1,5 +1,5 @@
 const AWS = require("aws-sdk");
-const { SimpleCacheClient } = require("@momento/sdk");
+const { SimpleCacheClient } = require("@gomomento/sdk");
 
 MOMENTO_SECRET_ID = "accounts/MomentoAuthToken";
 MOMENTO_DEFAULT_TTL = 60;

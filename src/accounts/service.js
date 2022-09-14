@@ -20,7 +20,7 @@ const {
   MembershipDoesNotExistError,
   InvalidUserPermissionError,
 } = require("./errors");
-const { CacheGetStatus } = require("@momento/sdk");
+const { CacheGetStatus } = require("@gomomento/sdk");
 const TABLE_NAME = process.env.TABLE_NAME;
 const CACHE_NAME = process.env.CACHE_NAME;
 
