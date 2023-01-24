@@ -2,6 +2,10 @@ service: momento-serverless-tutorial
 
 frameworkVersion: '3'
 
+plugins:
+#  - serverless-event-body-option
+#  - serverless-aws-alias
+
 provider:
   name: aws
   runtime: nodejs16.x

@@ -2,6 +2,11 @@
   "dependencies": {
     "@gomomento/sdk": "^0.15.2",
     "@middy/core": "^2.5.7",
+    "aws-sdk": "^2.1300.0",
+    "serverless-event-body-option": "^1.2.0",
     "slugify": "^1.4.0"
+  },
+  "devDependencies": {
+    "serverless-aws-alias": "^1.8.0"
   }
 }

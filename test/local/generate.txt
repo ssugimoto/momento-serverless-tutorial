@@ -1,0 +1,1 @@
+$ serverless generate-event -t aws:apiGateway

@@ -1,0 +1,115 @@
+{
+  "resource": "/user",
+  "path": "/user",
+  "httpMethod": "GET",
+  "headers": {
+    "Accept": "*/*",
+    "CloudFront-Forwarded-Proto": "https",
+    "CloudFront-Is-Desktop-Viewer": "true",
+    "CloudFront-Is-Mobile-Viewer": "false",
+    "CloudFront-Is-SmartTV-Viewer": "false",
+    "CloudFront-Is-Tablet-Viewer": "false",
+    "CloudFront-Viewer-ASN": "17506",
+    "CloudFront-Viewer-Country": "JP",
+    "Host": "rhpuhxoxdk.execute-api.us-east-1.amazonaws.com",
+    "User-Agent": "curl/7.74.0",
+    "Via": "2.0 1a66f1841a66beb1461c34f28edb09ee.cloudfront.net (CloudFront)",
+    "X-Amz-Cf-Id": "mwTUT7bUDGkfEEJ4-ALpBQAGddtQ_4hOa8UBlbsUFCixEmSwcYdRYA==",
+    "X-Amzn-Trace-Id": "Root=1-63cea153-4e65d4a2165da4f372029981",
+    "X-Forwarded-For": "113.35.111.66, 130.176.189.44",
+    "X-Forwarded-Port": "443",
+    "X-Forwarded-Proto": "https"
+  },
+  "multiValueHeaders": {
+    "Accept": [
+      "*/*"
+    ],
+    "CloudFront-Forwarded-Proto": [
+      "https"
+    ],
+    "CloudFront-Is-Desktop-Viewer": [
+      "true"
+    ],
+    "CloudFront-Is-Mobile-Viewer": [
+      "false"
+    ],
+    "CloudFront-Is-SmartTV-Viewer": [
+      "false"
+    ],
+    "CloudFront-Is-Tablet-Viewer": [
+      "false"
+    ],
+    "CloudFront-Viewer-ASN": [
+      "17506"
+    ],
+    "CloudFront-Viewer-Country": [
+      "JP"
+    ],
+    "Host": [
+      "rhpuhxoxdk.execute-api.us-east-1.amazonaws.com"
+    ],
+    "User-Agent": [
+      "curl/7.74.0"
+    ],
+    "Via": [
+      "2.0 1a66f1841a66beb1461c34f28edb09ee.cloudfront.net (CloudFront)"
+    ],
+    "X-Amz-Cf-Id": [
+      "mwTUT7bUDGkfEEJ4-ALpBQAGddtQ_4hOa8UBlbsUFCixEmSwcYdRYA=="
+    ],
+    "X-Amzn-Trace-Id": [
+      "Root=1-63cea153-4e65d4a2165da4f372029981"
+    ],
+    "X-Forwarded-For": [
+      "113.35.111.66, 130.176.189.44"
+    ],
+    "X-Forwarded-Port": [
+      "443"
+    ],
+    "X-Forwarded-Proto": [
+      "https"
+    ]
+  },
+  "queryStringParameters": {
+    "username": "oliviaowner"
+  },
+  "multiValueQueryStringParameters": {
+    "username": [
+      "oliviaowner"
+    ]
+  },
+  "pathParameters": null,
+  "stageVariables": null,
+  "requestContext": {
+    "resourceId": "kbt7kn",
+    "resourcePath": "/user",
+    "httpMethod": "GET",
+    "extendedRequestId": "fM4lIGHooAMFdlA=",
+    "requestTime": "23/Jan/2023:15:01:39 +0000",
+    "path": "/dev/user",
+    "accountId": "588439015833",
+    "protocol": "HTTP/1.1",
+    "stage": "dev",
+    "domainPrefix": "rhpuhxoxdk",
+    "requestTimeEpoch": 1674486099823,
+    "requestId": "68964e8a-6f60-4cbf-b0a2-aa692708a39e",
+    "identity": {
+      "cognitoIdentityPoolId": null,
+      "accountId": null,
+      "cognitoIdentityId": null,
+      "caller": null,
+      "sourceIp": "113.35.111.66",
+      "principalOrgId": null,
+      "accessKey": null,
+      "cognitoAuthenticationType": null,
+      "cognitoAuthenticationProvider": null,
+      "userArn": null,
+      "userAgent": "curl/7.74.0",
+      "user": null
+    },
+    "domainName": "rhpuhxoxdk.execute-api.us-east-1.amazonaws.com",
+    "apiId": "rhpuhxoxdk"
+  },
+  "body": null,
+  "isBase64Encoded": false
+}
