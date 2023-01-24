@@ -4,11 +4,12 @@ frameworkVersion: '3'
 
 provider:
   name: aws
-  runtime: nodejs14.x
+  runtime: nodejs16.x
   environment:
     TABLE_NAME: !Ref DynamoDBTable
     CACHE_NAME: 'accounts-cache'
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+    MOMENTO_AUTH_TOKEN : 
   iam:
     role:
       statements:
@@ -21,7 +22,7 @@ provider:
         - Effect: "Allow"
           Action:
             - "secretsmanager:GetSecretValue"
-          Resource: "<yourSecretArn>"
+          Resource: "*"
 
 functions:
   createUser:
@@ -40,6 +41,10 @@ functions:
     handler: src/handlers/userInOrganization.handler
     events:
       - http: GET /organizations/{organization}/members/{username}
+  getUser:
+    handler: src/handlers/getUser.handler
+    events:
+      - http: GET /user
 
 resources:
   Resources:

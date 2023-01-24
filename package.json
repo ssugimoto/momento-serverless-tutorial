@@ -1,7 +1,7 @@
 {
   "dependencies": {
+    "@gomomento/sdk": "^0.15.2",
     "@middy/core": "^2.5.7",
-    "@gomomento/sdk": "^0.15.0",
     "slugify": "^1.4.0"
   }
 }

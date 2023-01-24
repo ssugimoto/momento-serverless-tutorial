@@ -65,10 +65,12 @@ class AccountService {
       getUserCacheKey(user)
     );
     if (getResp.status === CacheGetStatus.Hit) {
+      console.log("キャッシュにヒットしました.")
       const cacheContent = JSON.parse(getResp.text());
       return cacheContent ? itemToUser(cacheContent) : null;
+    } else {
+      console.log("キャッシュ無し.")
     }
-
     const response = await this._dynamoDBClient
       .getItem({
         TableName: TABLE_NAME,
